@@ -23,6 +23,7 @@ mqtt_settings = Settings.MQTT(host=mqtt_host)
 
 light_info = LightInfo(
     name=f"{device_name} Backlight",
+    unique_id=f"backlight_control_{device_name}",
     brightness=True,
     effect=False)
 
