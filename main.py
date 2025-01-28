@@ -2,6 +2,7 @@ import json
 import os
 import socket
 import sys
+import time
 from ha_mqtt_discoverable import Settings
 from ha_mqtt_discoverable.sensors import Light, LightInfo
 from paho.mqtt.client import Client, MQTTMessage
@@ -59,7 +60,9 @@ bl = Light(settings, my_callback, None)
 
 write_brightness(50)
 
-try:
-    input("Press Ctrl + C to quit...")
-except KeyboardInterrupt:
-    print("Exiting!")
+print("Press Ctrl + C to quit...")
+while True:
+    try:
+        time.sleep(60)
+    except KeyboardInterrupt:
+        break
