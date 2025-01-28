@@ -9,6 +9,7 @@ from paho.mqtt.client import Client, MQTTMessage
 
 mqtt_host = os.getenv("MQTT_HOST")
 bl_file = os.getenv("BACKLIGHT_CONTROL_FILE")
+device_name = os.getenv("DEVICE_NAME", socket.gethostname())
 
 if not mqtt_host:
     sys.stderr.write("No MQTT host found! Set MQTT_HOST")
@@ -21,7 +22,7 @@ if not bl_file:
 mqtt_settings = Settings.MQTT(host=mqtt_host)
 
 light_info = LightInfo(
-    name=f"{socket.gethostname()} Backlight",
+    name=f"{device_name} Backlight",
     brightness=True,
     effect=False)
 
