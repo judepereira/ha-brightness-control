@@ -20,6 +20,5 @@ $ source venv/bin/activate
 $ pip install -r requirements.txt
 $ export MQTT_HOST=<your HA MQTT host>
 $ export BACKLIGHT_CONTROL_FILE=/sys/class/backlight/10-0045/brightness 
-# You might need to run the following as root
 $ python main.py
 ```
