@@ -29,9 +29,12 @@ light_info = LightInfo(
 
 settings = Settings(mqtt=mqtt_settings, entity=light_info)
 
+with open(bl_file, 'r') as f:
+    last_brightness = int(f.readline())
+
 
 def write_brightness(level: int):
-    bl.brightness(int(level / 100 * 255))
+    bl.brightness(level)
     if level == 0:
         bl.off()
     else:
@@ -42,25 +45,29 @@ def write_brightness(level: int):
 
 
 def my_callback(client: Client, user_data, message: MQTTMessage):
+    global last_brightness
     try:
         payload = json.loads(message.payload.decode())
     except ValueError as error:
         print("Ony JSON schema is supported for light entities!")
         return
 
+    print(f'Received: f{payload}')
+
     if "brightness" in payload:
         brightness = payload["brightness"]
-        write_brightness(int(int(brightness) / 255 * 100))
+        write_brightness(int(brightness))
+        last_brightness = brightness
     elif "state" in payload:
         if payload["state"] == light_info.payload_on:
-            write_brightness(50)
+            write_brightness(last_brightness)
         else:
             write_brightness(0)
 
 
 bl = Light(settings, my_callback, None)
 
-write_brightness(50)
+write_brightness(last_brightness)
 
 print("Press Ctrl + C to quit...")
 while True:
